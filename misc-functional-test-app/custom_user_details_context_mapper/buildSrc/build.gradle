@@ -1,0 +1,10 @@
+repositories {
+	maven { url "https://plugins.gradle.org/m2/" }
+	maven { url 'https://repo.grails.org/grails/core' }
+}
+
+dependencies {
+	implementation "org.grails:grails-gradle-plugin:6.2.0"
+	implementation "com.github.erdi:webdriver-binaries-gradle-plugin:3.2"
+	implementation "com.bertramlabs.plugins:asset-pipeline-gradle:3.3.4"
+}

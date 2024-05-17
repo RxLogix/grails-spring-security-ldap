@@ -1,38 +1,24 @@
-buildscript {
-	ext {
-		grailsVersion = project.grailsVersion
-	}
-	repositories {
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
-		maven { url 'https://repo.grails.org/grails/core' }
-	}
-	dependencies {
-		classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-		classpath "org.asciidoctor:asciidoctor-gradle-jvm:3.1.0"
-		classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
-	}
-}
-
 plugins {
-	id 'io.spring.dependency-management' version '0.5.2.RELEASE'
+	id 'io.spring.dependency-management'
+	id 'java-library'
+	id 'org.grails.grails-plugin'
+	id 'maven-publish'
+	id "org.asciidoctor.jvm.convert"
+	id "com.jfrog.artifactory"
 }
 
 version = file('version.txt').text.trim()
 group 'org.grails.plugins'
 
-apply plugin: 'java-library'
-apply plugin: 'org.grails.grails-plugin'
-apply plugin: 'maven-publish'
-apply plugin: "org.asciidoctor.jvm.convert"
-apply plugin: "com.jfrog.artifactory"
-
 ext {
 	grailsVersion = project.grailsVersion
 }
 
-sourceCompatibility = targetCompatibility = 1.8
+java {
+	sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
+	// tested and works fine on Java 17
+	//sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
 	mavenLocal()
@@ -52,7 +38,7 @@ dependencies {
 	compileOnly 'org.grails:grails-dependencies'
 	compileOnly 'org.grails:grails-web-boot'
 
-	api 'org.grails.plugins:spring-security-core:5.3.0'
+	api 'org.grails.plugins:spring-security-core:6.1.1'
 
 	api "org.springframework.security:spring-security-ldap:$springSecurityVersion", {
 		['apacheds-core', 'apacheds-core-entry', 'apacheds-protocol-ldap', 'apacheds-protocol-shared',
