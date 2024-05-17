@@ -38,17 +38,17 @@ import grails.plugins.Plugin
 
 class SpringSecurityLdapGrailsPlugin extends Plugin {
 
-	String grailsVersion = '4.0.0 > *'
+	String grailsVersion = '5.3.6 > *'
 	List loadAfter = ['springSecurityCore']
 	String author = 'Burt Beckwith'
 	String authorEmail = 'burt@burtbeckwith.com'
 	String title = 'LDAP authentication support for the Spring Security plugin.'
 	String description = 'LDAP authentication support for the Spring Security plugin.'
-	String documentation = 'http://grails-plugins.github.io/grails-spring-security-ldap/'
+	String documentation = 'https://github.com/RxLogix/grails-spring-security-ldap'
 	String license = 'APACHE'
 	def organization = [name: 'Grails', url: 'http://www.grails.org/']
-	def issueManagement = [url: 'https://github.com/grails-plugins/grails-spring-security-ldap/issues']
-	def scm = [url: 'https://github.com/grails-plugins/grails-spring-security-ldap']
+	def issueManagement = [url: 'https://github.com/RxLogix/grails-spring-security-ldap/issues']
+	def scm = [url: 'https://github.com/RxLogix/grails-spring-security-ldap']
 
 	Closure doWithSpring() {{ ->
 

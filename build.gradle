@@ -7,10 +7,9 @@ buildscript {
 			url "https://plugins.gradle.org/m2/"
 		}
 		maven { url 'https://repo.grails.org/grails/core' }
-		jcenter()
 	}
 	dependencies {
-		classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+		classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
 		classpath "org.asciidoctor:asciidoctor-gradle-jvm:3.1.0"
 		classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
 	}
@@ -18,14 +17,14 @@ buildscript {
 
 plugins {
 	id 'io.spring.dependency-management' version '0.5.2.RELEASE'
-	id 'com.jfrog.bintray' version '1.2'
 }
 
 version = file('version.txt').text.trim()
 group 'org.grails.plugins'
 
+apply plugin: 'java-library'
 apply plugin: 'org.grails.grails-plugin'
-apply plugin: 'org.grails.grails-plugin-publish'
+apply plugin: 'maven-publish'
 apply plugin: "org.asciidoctor.jvm.convert"
 apply plugin: "com.jfrog.artifactory"
 
@@ -49,14 +48,13 @@ dependencyManagement {
 }
 
 dependencies {
+	compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+	compileOnly 'org.grails:grails-dependencies'
+	compileOnly 'org.grails:grails-web-boot'
 
-	provided 'javax.servlet:javax.servlet-api:3.1.0'
-	provided 'org.grails:grails-dependencies'
-	provided 'org.grails:grails-web-boot'
+	api 'org.grails.plugins:spring-security-core:5.3.0'
 
-	compile 'org.grails.plugins:spring-security-core:4.0.0'
-
-	compile "org.springframework.security:spring-security-ldap:$springSecurityVersion", {
+	api "org.springframework.security:spring-security-ldap:$springSecurityVersion", {
 		['apacheds-core', 'apacheds-core-entry', 'apacheds-protocol-ldap', 'apacheds-protocol-shared',
 		 'apacheds-server-jndi', 'commons-logging', 'fest-assert', 'jcl-over-slf4j', 'junit',
 		 'ldapsdk', 'logback-classic', 'mockito-core', 'shared-ldap', 'slf4j-api', 'spring-beans',
@@ -64,7 +62,7 @@ dependencies {
 		 'spring-test', 'spring-tx'].each { exclude module: it }
 	}
 
-	compile "org.springframework.ldap:spring-ldap-core:$springLdapCoreVersion", {
+	api "org.springframework.ldap:spring-ldap-core:$springLdapCoreVersion", {
 		['commons-lang', 'gsbase', 'junit', 'mockito-core', 'powermock-api-mockito',
 		 'powermock-api-support', 'powermock-core', 'powermock-module-junit4',
 		 'powermock-module-junit4-common', 'powermock-reflect', 'slf4j-log4j12', 'spring-beans',
@@ -72,11 +70,11 @@ dependencies {
 	}
 
 	console 'org.grails:grails-console'
-	testCompile "org.grails:grails-web-testing-support"
+	testImplementation "org.grails:grails-web-testing-support"
 }
 
-apply from: "${rootProject.projectDir}/gradle/grailsPublish.gradle"
 apply from: "${rootProject.projectDir}/gradle/artifactoryPublish.gradle"
+apply from: "${rootProject.projectDir}/gradle/mavenPublish.gradle"
 apply from: "${rootProject.projectDir}/gradle/testVerbose.gradle"
 
 asciidoctor {
